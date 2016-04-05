@@ -1,0 +1,40 @@
+policy_module(irond, 0.2)
+
+type irond_t;
+type irond_exec_t;
+type irond_unit_file_t;
+systemd_unit_file(irond_unit_file_t)
+
+type irond_etc_t;
+files_type(irond_etc_t)
+type irond_tmp_t;
+files_type(irond_tmp_t)
+type irond_log_t;
+logging_log_file(irond_log_t)
+type irond_etc_rw_t;
+files_type(irond_etc_rw_t)
+
+init_daemon_domain(irond_t, irond_exec_t)
+
+auth_read_passwd(irond_t)
+corecmd_exec_bin(irond_t)
+
+corenet_tcp_bind_generic_node(irond_t)
+corenet_tcp_bind_generic_port(irond_t)
+corenet_tcp_bind_http_port(irond_t)
+
+dev_read_urand(irond_t)
+dev_read_rand(irond_t)
+dev_list_sysfs(irond_t)
+kernel_read_system_state(irond_t)
+kernel_read_network_state(irond_t)
+
+
+files_tmp_filetrans(irond_t, irond_tmp_t, { file dir })
+allow irond_t self:process execmem;
+allow irond_t self:tcp_socket { setopt getopt bind create accept listen read write };
+read_files_pattern(irond_t,irond_etc_t,irond_etc_t)
+search_dirs_pattern(irond_t,irond_etc_t,irond_etc_t)
+manage_files_pattern(irond_t,irond_tmp_t,irond_tmp_t)
+manage_files_pattern(irond_t,irond_etc_t,irond_etc_rw_t)
+manage_files_pattern(irond_t,irond_log_t,irond_log_t)

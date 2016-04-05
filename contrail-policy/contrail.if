@@ -1,0 +1,46 @@
+# Template declarations from contrail. We need 
+# to have different types for config files and
+# log files as these should be considered private
+#
+# The config files contains different credentials,
+# and the logfiles contain lots of stacktraces where
+# these can be leaked.
+template(`contrail_basic_types_template',`
+    gen_require(`
+		attribute contrail_domain;
+    ')
+
+	type $1_t, contrail_domain;
+	type $1_exec_t;
+    
+    type $1_etc_t;
+    files_type($1_etc_t)
+    read_files_pattern($1_t,contrail_etc_t,$1_etc_t)
+    type $1_unit_file_t;
+    systemd_unit_file($1_unit_file_t)
+
+	corenet_all_recvfrom_unlabeled($1_t)
+	corenet_all_recvfrom_netlabel($1_t)
+
+   type $1_log_t;
+   logging_log_file($1_log_t)
+   logging_send_syslog_msg($1_t)
+
+')
+
+template(`contrail_control_types_template',`
+	type $1_t;
+	type $1_exec_t;
+
+        type $1_etc_t;
+        files_type($1_etc_t)
+        read_files_pattern($1_t,contrail_etc_t,$1_etc_t)
+
+        type $1_unit_file_t;
+        systemd_unit_file($1_unit_file_t)
+
+        type $1_log_t;
+        logging_log_file($1_log_t)
+        logging_send_syslog_msg($1_t)
+
+')

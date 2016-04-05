@@ -1,0 +1,88 @@
+/etc/contrail/contrail-api.conf -- gen_context(system_u:object_r:contrail_api_etc_t,s0)
+/etc/contrail/contrail-device-manager.conf -- gen_context(system_u:object_r:contrail_device_manager_etc_t,s0)
+/etc/contrail/contrail-discovery.conf -- gen_context(system_u:object_r:contrail_discovery_etc_t,s0)
+/etc/contrail/contrail-schema.conf -- gen_context(system_u:object_r:contrail_schema_etc_t,s0)
+/etc/contrail/contrail-svc-monitor.conf -- gen_context(system_u:object_r:contrail_svc_monitor_etc_t,s0)
+
+/etc/contrail/contrail-control.conf -- gen_context(system_u:object_r:contrail_control_etc_t,s0)
+/etc/contrail/dns/contrail-dns.conf -- gen_context(system_u:object_r:contrail_dns_etc_t,s0)
+/etc/contrail/dns/contrail-named.conf -- gen_context(system_u:object_r:contrail_named_etc_t,s0)
+/etc/contrail/dns/contrail-rndc.conf -- gen_context(system_u:object_r:contrail_named_etc_t,s0)
+/etc/contrail/dns/rndc.conf -- gen_context(system_u:object_r:contrail_named_etc_t,s0)
+
+/etc/contrail/contrail-vrouter-agent.conf -- gen_context(system_u:object_r:contrail_vrouter_agent_etc_t,s0)
+
+/etc/contrail/contrail-alarm-gen.conf -- gen_context(system_u:object_r:contrail_alarm_gen_etc_t,s0)
+/etc/contrail/contrail-analytics-api.conf -- gen_context(system_u:object_r:contrail_analytics_api_etc_t,s0)
+/etc/contrail/contrail-collector.conf -- gen_context(system_u:object_r:contrail_collector_etc_t,s0)
+/etc/contrail/contrail-query-engine.conf -- gen_context(system_u:object_r:contrail_query_engine_etc_t,s0)
+/etc/contrail/contrail-snmp-collector.conf -- gen_context(system_u:object_r:contrail_snmp_collector_etc_t,s0)
+/etc/contrail/contrail-topology.conf -- gen_context(system_u:object_r:contrail_topology_etc_t,s0)
+
+
+/etc/contrail(/.*)? gen_context(system_u:object_r:contrail_etc_t,s0)
+/usr/bin/contrail-api -- gen_context(system_u:object_r:contrail_api_exec_t,s0)
+/usr/bin/contrail-device-manager -- gen_context(system_u:object_r:contrail_device_manager_exec_t,s0)
+/usr/bin/contrail-discovery -- gen_context(system_u:object_r:contrail_discovery_exec_t,s0)
+/usr/bin/contrail-schema -- gen_context(system_u:object_r:contrail_schema_exec_t,s0)
+/usr/bin/contrail-svc-monitor -- gen_context(system_u:object_r:contrail_svc_monitor_exec_t,s0)
+
+/usr/bin/contrail-control -- gen_context(system_u:object_r:contrail_control_exec_t,s0)
+/usr/bin/contrail-dns -- gen_context(system_u:object_r:contrail_dns_exec_t,s0)
+/usr/bin/contrail-named -- gen_context(system_u:object_r:contrail_named_exec_t,s0)
+/usr/bin/contrail-rndc -- gen_context(system_u:object_r:contrail_rndc_exec_t,s0)
+
+/usr/bin/contrail-vrouter-agent -- gen_context(system_u:object_r:contrail_vrouter_agent_exec_t,s0)
+
+/usr/bin/contrail-query-engine -- gen_context(system_u:object_r:contrail_query_engine_exec_t,s0)
+/usr/bin/contrail-snmp-collector -- gen_context(system_u:object_r:contrail_snmp_collector_exec_t,s0)
+/usr/bin/contrail-alarm-gen -- gen_context(system_u:object_r:contrail_alarm_gen_exec_t,s0)
+/usr/bin/contrail-collector -- gen_context(system_u:object_r:contrail_collector_exec_t,s0)
+/usr/bin/contrail-topology -- gen_context(system_u:object_r:contrail_topology_exec_t,s0)
+/usr/bin/contrail-analytics-api -- gen_context(system_u:object_r:contrail_analytics_api_exec_t,s0)
+
+
+/usr/lib/systemd/system/contrail-api.service -- gen_context(system_u:object_r:contrail_api_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-device-manager.service -- gen_context(system_u:object_r:contrail_device_manager_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-discovery.service -- gen_context(system_u:object_r:contrail_discovery_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-schema.service -- gen_context(system_u:object_r:contrail_schema_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-svc-monitor.service -- gen_context(system_u:object_r:contrail_svc_monitor_unit_file_t,s0)
+
+/usr/lib/sysemd/system/contrail-control.service  -- gen_context(system_u:object_r:contrail_control_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-dns.service -- gen_context(system_u:object_r:contrail_dns_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-named.service -- gen_context(system_u:object_r:contrail_named_unit_file_t,s0)
+
+/usr/lib/systemd/system/contrail-vrouter-agent.service -- gen_context(system_u:object_r:contrail_vrouter_agent_unit_file_t,s0)
+
+/usr/lib/systemd/system/contrail-alarm-gen.service -- gen_context(system_u:object_r:contrail_alarm_gen_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-analytics-api.service -- gen_context(system_u:object_r:contrail_analytics_api_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-collector.service -- gen_context(system_u:object_r:contrail_collector_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-query-engine.service -- gen_context(system_u:object_r:contrail_query_engine_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-snmp-collector.service -- gen_context(system_u:object_r:contrail_snmp_collector_unit_file_t,s0)
+/usr/lib/systemd/system/contrail-topology.service -- gen_context(system_u:object_r:contrail_topology_unit_file_t,s0)
+
+/var/log/contrail(/.*)?   gen_context(system_u:object_r:contrail_log_t,s0)
+/var/log/contrail/contrail-api.log(.*)?  gen_context(system_u:object_r:contrail_api_log_t,s0)
+/var/log/contrail/contrail-device-manager.log(.*)?  gen_context(system_u:object_r:contrail_device_manager_log_t,s0)
+/var/log/contrail/contrail-discovery.log(.*)?  gen_context(system_u:object_r:contrail_discovery_log_t,s0)
+/var/log/contrail/contrail-schema.log(.*)?  gen_context(system_u:object_r:contrail_schema_log_t,s0)
+/var/log/contrail/contrail-svc-monitor.log(.*)?  gen_context(system_u:object_r:contrail_svc_monitor_log_t,s0)
+/var/log/contrail/svc-monitor.err(.*)?  gen_context(system_u:object_r:contrail_svc_monitor_log_t,s0)
+/var/log/contrail/schema.err(.*)?  gen_context(system_u:object_r:contrail_schema_log_t,s0)
+/var/log/contrail/schema-zk.log(.*)?  gen_context(system_u:object_r:contrail_schema_log_t,s0)
+/var/log/contrail/device-manager-zk.log(.*)?  gen_context(system_u:object_r:contrail_device_manager_log_t,s0)
+/var/log/contrail/api-0-zk.log(.*)? gen_context(system_u:object_r:contrail_api_log_t,s0)
+/var/log/contrail/vnc_openstack.err(.*)? gen_context(system_u:object_r:contrail_api_log_t,s0)
+/var/log/contrail/contrail-control.log(.*)? gen_context(system_u:object_r:contrail_control_log_t,s0)
+/var/log/contrail/contrail-dns.log(.*)? gen_context(system_u:object_r:contrail_dns_log_t,s0)
+/var/log/contrail/contrail-named.log(.*)? gen_context(system_u:object_r:contrail_named_log_t,s0)
+/var/log/contrail/contrail-vrouter-agent.log(.*?) gen_context(system_u:object_r:contrail_vrouter_agent_log_t,s0)
+/var/log/contrail/contrail-alarm-gen.log(.*?) gen_context(system_u:object_r:contrail_alarm_gen_log_t,s0)
+/var/log/contrail/contrail-analytics-api.log(.*?) gen_context(system_u:object_r:contrail_analytics_api_log_t,s0)
+/var/log/contrail/contrail-collector.log(.*?) gen_context(system_u:object_r:contrail_collector_log_t,s0)
+/var/log/contrail/contrail-query-engine.log(.*?) gen_context(system_u:object_r:contrail_query_engine_log_t,s0)
+/var/log/contrail/contrail-snmp-collector.log(.*?) gen_context(system_u:object_r:contrail_snmp_collector_log_t,s0)
+/var/log/contrail/contrail-topology.log(.*?) gen_context(system_u:object_r:contrail_topology_log_t,s0)
+
+
+

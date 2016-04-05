@@ -1,0 +1,6 @@
+/etc/ifmap-server(/.*)? gen_context(system_u:object_r:irond_etc_t,s0) 
+/etc/ifmap-server/publisher.properties -- gen_context(system_u:object_r:irond_etc_rw_t,s0)
+/usr/lib/systemd/system/contrail-ifmap-server.service -- gen_context(system_u:object_r:irond_unit_file_t,s0)
+/usr/bin/ifmap-server -- gen_context(system_u:object_r:irond_exec_t,s0)
+/var/log/ifmap-server(/.*)? gen_context(system_u:object_r:irond_log_t,s0)
+

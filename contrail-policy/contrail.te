@@ -1,0 +1,342 @@
+policy_module(contrail, 0.2)
+#
+# hplip_port_t = 9100 among others ( contrail-api port)
+# commplex_main_port_t = 5000 (connect to listener for keystone haproxy ) 
+# vnc_port_t = 5998 among others, ( contrail-discovery)
+
+attribute contrail_domain;
+
+type contrail_etc_t;
+files_type(contrail_etc_t);
+
+type contrail_rndc_exec_t;
+files_type(contrail_rndc_exec_t)
+
+type contrail_log_t;
+logging_log_file(contrail_log_t)
+
+type contrail_collector_tmp_t;
+files_type(contrail_collector_tmp_t)
+
+type contrail_named_pid_t;
+files_pid_file(contrail_named_pid_t)
+
+
+
+contrail_basic_types_template(contrail_api)
+contrail_basic_types_template(contrail_device_manager)
+contrail_basic_types_template(contrail_discovery)
+contrail_basic_types_template(contrail_schema)
+contrail_basic_types_template(contrail_svc_monitor)
+
+contrail_basic_types_template(contrail_alarm_gen)
+contrail_basic_types_template(contrail_analytics_api)
+contrail_control_types_template(contrail_collector)
+contrail_control_types_template(contrail_query_engine)
+contrail_basic_types_template(contrail_snmp_collector)
+contrail_basic_types_template(contrail_topology)
+
+contrail_control_types_template(contrail_control)
+contrail_control_types_template(contrail_dns)
+contrail_control_types_template(contrail_named)
+
+contrail_control_types_template(contrail_vrouter_agent)
+
+require {
+	type named_var_run_t;
+}
+
+
+init_daemon_domain(contrail_api_t, contrail_api_exec_t)
+init_daemon_domain(contrail_device_manager_t, contrail_device_manager_exec_t)
+init_daemon_domain(contrail_discovery_t, contrail_discovery_exec_t)
+init_daemon_domain(contrail_schema_t, contrail_schema_exec_t)
+init_daemon_domain(contrail_svc_monitor_t, contrail_svc_monitor_exec_t)
+
+init_daemon_domain(contrail_alarm_gen_t, contrail_alarm_gen_exec_t)
+init_daemon_domain(contrail_analytics_api_t, contrail_analytics_api_exec_t)
+init_daemon_domain(contrail_collector_t, contrail_collector_exec_t)
+init_daemon_domain(contrail_query_engine_t, contrail_query_engine_exec_t)
+init_daemon_domain(contrail_snmp_collector_t, contrail_snmp_collector_exec_t)
+init_daemon_domain(contrail_topology_t, contrail_topology_exec_t)
+
+init_daemon_domain(contrail_control_t, contrail_control_exec_t)
+init_daemon_domain(contrail_dns_t, contrail_dns_exec_t)
+init_daemon_domain(contrail_named_t, contrail_named_exec_t)
+
+init_daemon_domain(contrail_vrouter_agent_t, contrail_vrouter_agent_exec_t)
+
+#handles logs
+manage_dirs_pattern(contrail_domain, contrail_log_t, contrail_log_t)
+append_files_pattern(contrail_domain, contrail_log_t, contrail_log_t)
+create_files_pattern(contrail_domain, contrail_log_t, contrail_log_t)
+setattr_files_pattern(contrail_domain, contrail_log_t, contrail_log_t)
+read_files_pattern(contrail_domain, contrail_etc_t, contrail_etc_t)
+
+dev_read_urand(contrail_domain)
+sysnet_dns_name_resolve(contrail_domain)
+
+corecmd_exec_bin(contrail_domain)
+corecmd_exec_shell(contrail_domain)
+libs_exec_ldconfig(contrail_domain)
+
+# contrail_api_t
+corenet_tcp_bind_generic_node(contrail_api_t)
+corenet_tcp_bind_hplip_port(contrail_api_t)
+corenet_tcp_bind_luci_port(contrail_api_t)
+corenet_tcp_connect_generic_port(contrail_api_t)
+corenet_tcp_connect_hplip_port(contrail_api_t)
+corenet_tcp_connect_amqp_port(contrail_api_t)
+corenet_tcp_connect_commplex_main_port(contrail_api_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_api_t)
+corenet_tcp_connect_vnc_port(contrail_api_t)
+corenet_tcp_connect_http_port(contrail_api_t)
+kernel_read_system_state(contrail_api_t)
+kernel_read_network_state(contrail_api_t)
+filetrans_pattern(contrail_api_t, contrail_log_t, contrail_api_log_t, file)
+manage_files_pattern(contrail_api_t, contrail_log_t, contrail_api_log_t)
+allow contrail_api_t self:tcp_socket { accept listen };
+
+# contrail_device_manager_t
+corenet_tcp_connect_amqp_port(contrail_device_manager_t)
+corenet_tcp_connect_hplip_port(contrail_device_manager_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_device_manager_t)
+corenet_tcp_connect_vnc_port(contrail_device_manager_t)
+corenet_tcp_connect_generic_port(contrail_device_manager_t)
+kernel_read_system_state(contrail_device_manager_t)
+corenet_tcp_bind_generic_node(contrail_device_manager_t)
+corenet_tcp_bind_generic_port(contrail_device_manager_t)
+filetrans_pattern(contrail_device_manager_t, contrail_log_t, contrail_device_manager_log_t, file)
+manage_files_pattern(contrail_device_manager_t, contrail_log_t, contrail_device_manager_log_t)
+allow contrail_device_manager_t self:tcp_socket { accept listen };
+
+# contrail_schema_t 
+corenet_tcp_connect_amqp_port(contrail_schema_t)
+corenet_tcp_connect_hplip_port(contrail_schema_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_schema_t)
+corenet_tcp_connect_vnc_port(contrail_schema_t)
+corenet_tcp_connect_generic_port(contrail_schema_t)
+kernel_read_system_state(contrail_schema_t)
+corenet_tcp_bind_generic_node(contrail_schema_t)
+corenet_tcp_bind_generic_port(contrail_schema_t)
+filetrans_pattern(contrail_schema_t, contrail_log_t, contrail_schema_log_t, file)
+manage_files_pattern(contrail_schema_t, contrail_log_t, contrail_schema_log_t)
+allow contrail_schema_t self:tcp_socket { accept listen };
+
+#============= contrail_svc_monitor_t ==============
+corenet_tcp_bind_generic_node(contrail_svc_monitor_t)
+corenet_tcp_bind_generic_port(contrail_svc_monitor_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_svc_monitor_t)
+corenet_tcp_connect_vnc_port(contrail_svc_monitor_t)
+filetrans_pattern(contrail_svc_monitor_t, contrail_log_t, contrail_svc_monitor_log_t, file)
+manage_files_pattern(contrail_svc_monitor_t, contrail_log_t, contrail_svc_monitor_log_t)
+kernel_read_system_state(contrail_svc_monitor_t)
+allow contrail_svc_monitor_t self:tcp_socket { accept listen };
+
+#============= contrail_discovery_t ==============
+corenet_tcp_connect_vnc_port(contrail_discovery_t)
+corenet_tcp_connect_generic_port(contrail_discovery_t)
+kernel_read_system_state(contrail_discovery_t)
+corenet_tcp_bind_vnc_port(contrail_discovery_t)
+corenet_tcp_bind_generic_node(contrail_discovery_t)
+filetrans_pattern(contrail_discovery_t, contrail_log_t, contrail_discovery_log_t, file)
+manage_files_pattern(contrail_discovery_t, contrail_log_t, contrail_discovery_log_t)
+allow contrail_discovery_t self:tcp_socket { accept listen };
+
+#============= contrail_control_t ==============
+miscfiles_read_all_certs(contrail_control_t)
+corenet_tcp_bind_generic_node(contrail_control_t)
+
+corenet_tcp_bind_bgp_port(contrail_control_t)
+corenet_tcp_bind_jabber_interserver_port(contrail_control_t)
+corenet_tcp_bind_us_cli_port(contrail_control_t)
+
+corenet_tcp_connect_bgp_port(contrail_control_t)
+corenet_tcp_connect_http_port(contrail_control_t)
+corenet_tcp_connect_us_cli_port(contrail_control_t)
+corenet_tcp_connect_vnc_port(contrail_control_t)
+corenet_tcp_connect_generic_port(contrail_control_t)
+
+kernel_read_system_state(contrail_control_t)
+
+sysnet_dns_name_resolve(contrail_control_t)
+
+filetrans_pattern(contrail_control_t, contrail_log_t, contrail_control_log_t, file)
+manage_files_pattern(contrail_control_t, contrail_log_t, contrail_control_log_t)
+
+read_files_pattern(contrail_control_t, contrail_etc_t, contrail_etc_t)
+
+allow contrail_control_t self:tcp_socket { accept listen };
+#============= contrail_dns_t ==============
+miscfiles_read_all_certs(contrail_dns_t)
+corenet_tcp_bind_generic_node(contrail_dns_t)
+corenet_udp_bind_generic_node(contrail_dns_t)
+
+corenet_tcp_bind_generic_port(contrail_dns_t)
+corenet_udp_bind_generic_port(contrail_dns_t)
+
+corenet_tcp_connect_generic_port(contrail_dns_t)
+corenet_tcp_connect_vnc_port(contrail_dns_t)
+corenet_tcp_connect_http_port(contrail_dns_t)
+
+kernel_read_system_state(contrail_dns_t)
+
+sysnet_dns_name_resolve(contrail_dns_t)
+
+read_files_pattern(contrail_dns_t, contrail_etc_t, contrail_etc_t)
+filetrans_pattern(contrail_dns_t, contrail_log_t, contrail_dns_log_t, file)
+read_files_pattern(contrail_dns_t, contrail_named_t, contrail_named_t)
+manage_files_pattern(contrail_dns_t, contrail_log_t, contrail_dns_log_t)
+manage_files_pattern(contrail_dns_t, contrail_etc_t, contrail_named_etc_t)
+manage_files_pattern(contrail_dns_t, contrail_etc_t, contrail_named_pid_t)
+
+can_exec(contrail_dns_t,contrail_rndc_exec_t)
+allow contrail_dns_t self:tcp_socket { accept listen };
+#============= contrail_named_t ==============
+miscfiles_read_all_certs(contrail_named_t)
+dev_read_urand(contrail_named_t)
+dev_read_rand(contrail_named_t)
+corenet_tcp_bind_generic_node(contrail_named_t)
+corenet_udp_bind_generic_node(contrail_named_t)
+
+corenet_tcp_bind_generic_port(contrail_named_t)
+corenet_udp_bind_generic_port(contrail_named_t)
+
+corenet_tcp_bind_dns_port(contrail_named_t)
+corenet_udp_bind_dns_port(contrail_named_t)
+
+sysnet_dns_name_resolve(contrail_named_t)
+
+
+filetrans_pattern(contrail_named_t, contrail_log_t, contrail_named_log_t, file)
+filetrans_pattern(contrail_named_t, contrail_etc_t, contrail_named_pid_t, file)
+manage_files_pattern(contrail_named_t, contrail_log_t, contrail_named_log_t)
+manage_files_pattern(contrail_named_t, contrail_etc_t, contrail_named_pid_t)
+manage_files_pattern(contrail_named_t, named_var_run_t, named_var_run_t)
+
+allow contrail_named_t self:tcp_socket { accept listen };
+
+#============= contrail_vrouter_agent_t ==============
+
+dev_read_urand(contrail_vrouter_agent_t)
+dev_read_rand(contrail_vrouter_agent_t)
+kernel_read_system_state(contrail_vrouter_agent_t)
+kernel_read_network_state(contrail_vrouter_agent_t)
+filetrans_pattern(contrail_vrouter_agent_t, contrail_log_t, contrail_vrouter_agent_log_t, file)
+manage_files_pattern(contrail_vrouter_agent_t, contrail_log_t, contrail_vrouter_agent_log_t)
+virt_read_lib_files(contrail_vrouter_agent_t)
+
+corenet_tcp_bind_generic_node(contrail_vrouter_agent_t)
+corenet_udp_bind_generic_node(contrail_vrouter_agent_t)
+
+corenet_tcp_bind_generic_port(contrail_vrouter_agent_t)
+corenet_udp_bind_generic_port(contrail_vrouter_agent_t)
+
+
+corenet_tcp_bind_websm_port(contrail_vrouter_agent_t)
+corenet_tcp_connect_vnc_port(contrail_vrouter_agent_t)
+
+corenet_rw_tun_tap_dev(contrail_vrouter_agent_t)
+
+dev_manage_generic_chr_files(contrail_vrouter_agent_t)
+
+files_list_var_lib(contrail_vrouter_agent_t)
+
+dev_read_sysfs(contrail_vrouter_agent_t)
+
+allow contrail_vrouter_agent_t self:capability { net_admin net_raw sys_module dac_override };
+allow contrail_vrouter_agent_t self:capability2 block_suspend;
+allow contrail_vrouter_agent_t self:netlink_route_socket { write nlmsg_write read bind create nlmsg_read };
+allow contrail_vrouter_agent_t self:netlink_socket { write setopt getopt read bind create };
+allow contrail_vrouter_agent_t self:packet_socket { bind create ioctl };
+allow contrail_vrouter_agent_t self:tcp_socket { setopt read bind create accept write getattr connect getopt listen };
+allow contrail_vrouter_agent_t self:tun_socket create;
+allow contrail_vrouter_agent_t self:udp_socket { read bind create getattr };
+
+#============= contrail_alarm_gen_t ==============
+corenet_tcp_bind_generic_node(contrail_alarm_gen_t)
+corenet_tcp_bind_vnc_port(contrail_alarm_gen_t)
+corenet_tcp_connect_generic_port(contrail_alarm_gen_t)
+corenet_tcp_connect_redis_port(contrail_alarm_gen_t)
+corenet_tcp_connect_vnc_port(contrail_alarm_gen_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_alarm_gen_t)
+
+kernel_read_system_state(contrail_alarm_gen_t)
+filetrans_pattern(contrail_alarm_gen_t, contrail_log_t, contrail_alarm_gen_log_t, file)
+manage_files_pattern(contrail_alarm_gen_t, contrail_log_t, contrail_alarm_gen_log_t)
+
+allow contrail_alarm_gen_t self:tcp_socket { accept listen };
+#============= contrail_analytics_api_t ==============
+corenet_tcp_bind_generic_node(contrail_analytics_api_t)
+corenet_tcp_bind_transproxy_port(contrail_analytics_api_t)
+corenet_tcp_bind_generic_port(contrail_analytics_api_t)
+corenet_tcp_connect_generic_port(contrail_analytics_api_t)
+corenet_tcp_connect_redis_port(contrail_analytics_api_t)
+corenet_tcp_connect_vnc_port(contrail_analytics_api_t)
+kernel_read_system_state(contrail_analytics_api_t)
+filetrans_pattern(contrail_analytics_api_t, contrail_log_t, contrail_analytics_api_log_t, file)
+manage_files_pattern(contrail_analytics_api_t, contrail_log_t, contrail_analytics_api_log_t)
+
+allow contrail_analytics_api_t self:tcp_socket { accept listen };
+#============= contrail_collector_t ==============
+corecmd_exec_shell(contrail_collector_t)
+corecmd_exec_bin(contrail_collector_t)
+
+corenet_tcp_bind_generic_node(contrail_collector_t)
+corenet_udp_bind_generic_node(contrail_collector_t)
+corenet_tcp_bind_generic_port(contrail_collector_t)
+corenet_udp_bind_generic_port(contrail_collector_t)
+corenet_tcp_connect_redis_port(contrail_collector_t)
+corenet_tcp_connect_generic_port(contrail_collector_t)
+corenet_tcp_connect_vnc_port(contrail_collector_t)
+
+kernel_read_system_state(contrail_collector_t)
+sysnet_dns_name_resolve(contrail_collector_t)
+filetrans_pattern(contrail_collector_t, contrail_log_t, contrail_collector_log_t, file)
+manage_files_pattern(contrail_collector_t, contrail_log_t, contrail_collector_log_t)
+
+files_tmp_filetrans(contrail_collector_t, contrail_collector_tmp_t, { file dir })
+manage_files_pattern(contrail_collector_t, contrail_collector_tmp_t, contrail_collector_tmp_t)
+manage_dirs_pattern(contrail_collector_t, contrail_collector_tmp_t, contrail_collector_tmp_t)
+
+allow contrail_collector_t self:tcp_socket { accept listen };
+#============= contrail_query_engine_t ==============
+corecmd_exec_shell(contrail_query_engine_t)
+corecmd_exec_bin(contrail_query_engine_t)
+
+corenet_tcp_bind_generic_node(contrail_query_engine_t)
+corenet_tcp_bind_generic_port(contrail_query_engine_t)
+corenet_tcp_connect_redis_port(contrail_query_engine_t)
+corenet_tcp_connect_generic_port(contrail_query_engine_t)
+corenet_tcp_connect_vnc_port(contrail_query_engine_t)
+kernel_read_system_state(contrail_query_engine_t)
+sysnet_dns_name_resolve(contrail_query_engine_t)
+
+filetrans_pattern(contrail_query_engine_t, contrail_log_t, contrail_query_engine_log_t, file)
+manage_files_pattern(contrail_query_engine_t, contrail_log_t, contrail_query_engine_log_t)
+
+allow contrail_query_engine_t self:tcp_socket { accept listen };
+#============= contrail_snmp_collector_t ==============
+corenet_tcp_bind_generic_node(contrail_snmp_collector_t)
+corenet_tcp_bind_vnc_port(contrail_snmp_collector_t)
+corenet_tcp_connect_hplip_port(contrail_snmp_collector_t)
+corenet_tcp_connect_generic_port(contrail_snmp_collector_t)
+corenet_tcp_connect_vnc_port(contrail_snmp_collector_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_snmp_collector_t)
+kernel_read_system_state(contrail_snmp_collector_t)
+filetrans_pattern(contrail_snmp_collector_t, contrail_log_t, contrail_snmp_collector_t, file)
+manage_files_pattern(contrail_snmp_collector_t, contrail_log_t, contrail_snmp_collector_log_t)
+
+allow contrail_snmp_collector_t self:tcp_socket { accept listen };
+#============= contrail_topology_t ==============
+corenet_tcp_bind_generic_node(contrail_topology_t)
+corenet_tcp_bind_vnc_port(contrail_topology_t)
+corenet_tcp_connect_generic_port(contrail_topology_t)
+corenet_tcp_connect_transproxy_port(contrail_topology_t)
+corenet_tcp_connect_vnc_port(contrail_topology_t)
+corenet_tcp_connect_zookeeper_client_port(contrail_topology_t)
+kernel_read_system_state(contrail_topology_t)
+filetrans_pattern(contrail_topology_t, contrail_log_t, contrail_topology_log_t, file)
+manage_files_pattern(contrail_topology_t, contrail_log_t, contrail_topology_log_t)
+
+allow contrail_topology_t self:tcp_socket { accept listen };
