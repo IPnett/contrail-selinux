@@ -126,6 +126,7 @@ allow contrail_schema_t self:tcp_socket { accept listen };
 #============= contrail_svc_monitor_t ==============
 corenet_tcp_bind_generic_node(contrail_svc_monitor_t)
 corenet_tcp_bind_generic_port(contrail_svc_monitor_t)
+corenet_tcp_connect_generic_port(contrail_svc_monitor_t)
 corenet_tcp_connect_zookeeper_client_port(contrail_svc_monitor_t)
 corenet_tcp_connect_vnc_port(contrail_svc_monitor_t)
 filetrans_pattern(contrail_svc_monitor_t, contrail_log_t, contrail_svc_monitor_log_t, file)
