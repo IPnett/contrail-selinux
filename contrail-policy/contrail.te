@@ -246,6 +246,7 @@ corenet_udp_bind_generic_port(contrail_vrouter_agent_t)
 
 corenet_tcp_bind_websm_port(contrail_vrouter_agent_t)
 corenet_tcp_connect_generic_port(contrail_vrouter_agent_t)
+corenet_tcp_connect_neutron_port(contrail_vrouter_agent_t)
 corenet_tcp_connect_vnc_port(contrail_vrouter_agent_t)
 corenet_tcp_connect_jabber_interserver_port(contrail_vrouter_agent_t)
 
