@@ -1,7 +1,7 @@
 policy_module(contrail, 0.2)
 #
 # hplip_port_t = 9100 among others ( contrail-api port)
-# commplex_main_port_t = 5000 (connect to listener for keystone haproxy ) 
+# commplex_main_port_t = 5000 (connect to listener for keystone haproxy )
 # vnc_port_t = 5998 among others, ( contrail-discovery)
 
 attribute contrail_domain;
@@ -43,7 +43,9 @@ contrail_control_types_template(contrail_named)
 contrail_control_types_template(contrail_vrouter_agent)
 
 require {
-	type named_var_run_t;
+    type named_var_run_t;
+    type virsh_exec_t;
+    type virsh_t;
 }
 
 
@@ -110,7 +112,7 @@ filetrans_pattern(contrail_device_manager_t, contrail_log_t, contrail_device_man
 manage_files_pattern(contrail_device_manager_t, contrail_log_t, contrail_device_manager_log_t)
 allow contrail_device_manager_t self:tcp_socket { accept listen };
 
-# contrail_schema_t 
+# contrail_schema_t
 corenet_tcp_connect_amqp_port(contrail_schema_t)
 corenet_tcp_connect_hplip_port(contrail_schema_t)
 corenet_tcp_connect_zookeeper_client_port(contrail_schema_t)
@@ -221,9 +223,14 @@ manage_files_pattern(contrail_named_t, named_var_run_t, named_var_run_t)
 allow contrail_named_t self:tcp_socket { accept listen };
 
 #============= contrail_vrouter_agent_t ==============
+corecmd_exec_shell(contrail_vrouter_agent_t)
+corecmd_exec_bin(contrail_vrouter_agent_t)
 
 dev_read_urand(contrail_vrouter_agent_t)
 dev_read_rand(contrail_vrouter_agent_t)
+
+domain_read_all_domains_state(contrail_vrouter_agent_t)
+
 kernel_read_system_state(contrail_vrouter_agent_t)
 kernel_read_network_state(contrail_vrouter_agent_t)
 filetrans_pattern(contrail_vrouter_agent_t, contrail_log_t, contrail_vrouter_agent_log_t, file)
@@ -238,24 +245,31 @@ corenet_udp_bind_generic_port(contrail_vrouter_agent_t)
 
 
 corenet_tcp_bind_websm_port(contrail_vrouter_agent_t)
+corenet_tcp_connect_generic_port(contrail_vrouter_agent_t)
 corenet_tcp_connect_vnc_port(contrail_vrouter_agent_t)
+corenet_tcp_connect_jabber_interserver_port(contrail_vrouter_agent_t)
 
 corenet_rw_tun_tap_dev(contrail_vrouter_agent_t)
 
 dev_manage_generic_chr_files(contrail_vrouter_agent_t)
 
 files_list_var_lib(contrail_vrouter_agent_t)
+files_read_var_lib_files(contrail_vrouter_agent_t)
 
 dev_read_sysfs(contrail_vrouter_agent_t)
 
+sysnet_dns_name_resolve(contrail_vrouter_agent_t)
+domtrans_pattern(contrail_vrouter_agent_t, virsh_exec_t, virsh_t)
+
+read_files_pattern(contrail_vrouter_agent_t, contrail_etc_t, contrail_etc_t)
 allow contrail_vrouter_agent_t self:capability { net_admin net_raw sys_module dac_override };
 allow contrail_vrouter_agent_t self:capability2 block_suspend;
 allow contrail_vrouter_agent_t self:netlink_route_socket { write nlmsg_write read bind create nlmsg_read };
-allow contrail_vrouter_agent_t self:netlink_socket { write setopt getopt read bind create };
+allow contrail_vrouter_agent_t self:netlink_socket { write setopt getopt read bind create getattr };
 allow contrail_vrouter_agent_t self:packet_socket { bind create ioctl };
 allow contrail_vrouter_agent_t self:tcp_socket { setopt read bind create accept write getattr connect getopt listen };
 allow contrail_vrouter_agent_t self:tun_socket create;
-allow contrail_vrouter_agent_t self:udp_socket { read bind create getattr };
+allow contrail_vrouter_agent_t self:udp_socket { read bind write connect create getattr };
 
 #============= contrail_alarm_gen_t ==============
 corenet_tcp_bind_generic_node(contrail_alarm_gen_t)
