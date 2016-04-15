@@ -19,6 +19,7 @@ rpm: build
 			--define "version $(VERSION)" \
 			--define "build_number $(BUILD_NUMBER)" \
 			irond-selinux.spec
+	mv $(OUTPUTDIR)/*.rpm .
 
 build:
 	@make -C ./contrail-policy -f /usr/share/selinux/devel/Makefile
