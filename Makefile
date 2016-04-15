@@ -2,7 +2,7 @@ VERSION ?= 1.0.0
 BUILD_NUMBER ?= 1
 TOPDIR = /tmp/contrail-selinux-rpm
 PWD = $(shell pwd)
-
+OUTPUTDIR = noarch
 
 rpm: build
 	@rpmbuild -v -bb \
